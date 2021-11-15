@@ -23,5 +23,11 @@ namespace TechJobsPersistent.Models
         {
             Name = name;
         }
+
+        public Job(string name, int employerId)
+        {
+            Name = name;
+            EmployerId = employerId;
+        }
     }
 }
