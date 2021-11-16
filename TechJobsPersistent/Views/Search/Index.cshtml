@@ -1,6 +1,6 @@
 ﻿<div class="container body-content">
 
-    <h1>@ViewBag.title</h1>
+
 
     <form action="/search/results" method="post">
         <h2>Search by:</h2>
@@ -8,11 +8,10 @@
         <p>
             @foreach (var column in ViewBag.columns)
             {
-                <span>
-                    <input type="radio" name="searchType" id="@column.Key" value="@column.Key" checked="@column.Key == 'all'" />
-                    <label for="@column.Key">@column.Value</label>
-                </span>
-            }
+<span>
+    <input type="radio" name="searchType" id="@column.Key" value="@column.Key" checked="@(column.Key == ViewBag.check)" />
+    <label for="@column.Key">@column.Value</label>
+</span>     }
 
         </p>
 
@@ -28,20 +27,20 @@
 
     @if (ViewBag.jobs != null)
     {
-        <table>
-            @foreach (var job in ViewBag.jobs)
-            {
-                <tr>
-                    <td>
-                        <p>ID: @job.JobId</p>
-                        <p>Name: @job.Name</p>
-                        <p>Employer: @job.EmployerName</p>
-                        <p>Location: @job.SkillText</p>
-                    </td>
-                </tr>
-            }
-        </table>
-    }
+<h3>@ViewBag.title</h3>
+                <table>
+                    @foreach (var job in ViewBag.jobs)
+                    {
+    <tr>
+        <td>
+            <p>ID: @job.JobId</p>
+            <p>Name: @job.Name</p>
+            <p>Employer: @job.EmployerName</p>
+            <p>Location: @job.SkillText</p>
+        </td>
+    </tr>
+}
+                </table>}
 
 
 </div>

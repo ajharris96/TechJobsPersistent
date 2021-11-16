@@ -24,6 +24,10 @@ namespace TechJobsPersistent.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            if (ViewBag.check == null)
+            {
+                ViewBag.check = "all";
+            }
             ViewBag.columns = ListController.ColumnChoices;
             return View();
         }
@@ -98,6 +102,7 @@ namespace TechJobsPersistent.Controllers
             ViewBag.columns = ListController.ColumnChoices;
             ViewBag.title = "Jobs with " + ListController.ColumnChoices[searchType] + ": " + searchTerm;
             ViewBag.jobs = displayJobs;
+            ViewBag.check = searchType;
 
             return View("Index");
         }
