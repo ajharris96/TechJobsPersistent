@@ -91,3 +91,7 @@ table.job-listing {
     table.job-listing td:last-child {
         width: 80%;
     }
+
+.clear {
+    clear: both;
+}

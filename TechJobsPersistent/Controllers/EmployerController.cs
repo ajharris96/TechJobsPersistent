@@ -59,13 +59,13 @@ namespace TechJobsPersistent.Controllers
 
             List<Employer>employers=context.Employers
                 .Where(e => e.Id==id)
-                .Include(e => e.Name)
-                .Include(e => e.Location)
                 .ToList();
+
+            Employer employer = employers[0];
 
          
 
-            return View(employers);
+            return View(employer);
         }
     }
 }
