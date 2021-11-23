@@ -60,7 +60,7 @@ namespace TechJobsPersistent.Controllers
                 {
                     jobs = context.Jobs
                         .Include(j => j.Employer)
-                        .Where(j => j.Employer.Name == searchTerm)
+                        .Where(j => j.Employer.Name.ToLower().Contains(searchTerm.ToLower()))
                         .ToList();
 
                     foreach (Job job in jobs)
@@ -78,7 +78,7 @@ namespace TechJobsPersistent.Controllers
                 else if (searchType == "skill")
                 {
                     List<JobSkill> jobSkills = context.JobSkills
-                        .Where(j => j.Skill.Name == searchTerm)
+                        .Where(j => j.Skill.Name.ToLower().Contains(searchTerm.ToLower()))
                         .Include(j => j.Job)
                         .ToList();
 
@@ -96,6 +96,43 @@ namespace TechJobsPersistent.Controllers
                         JobDetailViewModel newDisplayJob = new JobDetailViewModel(foundJob, displaySkills);
                         displayJobs.Add(newDisplayJob);
                     }
+                }
+                else if (searchType == "all")
+                {
+                    jobs = context.Jobs.Include(j => j.Employer).Where(j => j.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+                    jobs.AddRange(context.Jobs.Include(j => j.Employer).Where(j => j.Employer.Name.ToLower().Contains(searchTerm.ToLower())).ToList());
+                    jobs.AddRange(context.Jobs.Include(j => j.Employer).Where(j => j.Employer.Location.ToLower().Contains(searchTerm.ToLower())).ToList());
+                    List<JobSkill> jobSkills = context.JobSkills
+                        .Where(j => j.Skill.Name.ToLower().Contains(searchTerm.ToLower()))
+                        .Include(j => j.Job)
+                        .ToList();
+                    foreach (var job in jobSkills)
+                    {
+                        Job foundJob = context.Jobs
+                            .Include(j => j.Employer)
+                            .Single(j => j.Id == job.JobId);
+
+                        List<JobSkill> displaySkills = context.JobSkills
+                            .Where(js => js.JobId == foundJob.Id)
+                            .Include(js => js.Skill)
+                            .ToList();
+
+                        JobDetailViewModel newDisplayJob = new JobDetailViewModel(foundJob, displaySkills);
+                        displayJobs.Add(newDisplayJob);
+                    }
+
+                    foreach (var job in jobs)
+                    {
+                        List<JobSkill> jobSkills1 = context.JobSkills
+                        .Where(js => js.JobId == job.Id)
+                        .Include(js => js.Skill)
+                        .ToList();
+
+                        JobDetailViewModel newDisplayJob = new JobDetailViewModel(job, jobSkills1);
+                        displayJobs.Add(newDisplayJob);
+                    }
+
+
                 }
             }
 
