@@ -12,7 +12,11 @@ namespace TechJobsPersistent.ViewModels
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Location is required")]
+
         public string Location { get; set; }
+
+        [Required(ErrorMessage ="Url is required.")]
+        public string Url { get; set; }
 
         public AddEmployerViewModel()
         {

@@ -95,3 +95,8 @@ table.job-listing {
 .clear {
     clear: both;
 }
+
+.skills {
+    column-count: 6;
+}
+    

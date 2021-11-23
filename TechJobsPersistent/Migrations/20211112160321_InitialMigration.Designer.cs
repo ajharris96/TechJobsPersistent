@@ -116,6 +116,22 @@ namespace TechJobsPersistent.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("TechJobsPersistent.Models.User", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                b.Property<string>("Name")
+                    .HasColumnType("longtext");
+
+                b.Property<string>("Location")
+                    .HasColumnType("longtext");
+
+                b.Property<string>("Email")
+                   .HasColumnType("longtext");
+            });
+
             modelBuilder.Entity("TechJobsPersistent.Models.Job", b =>
                 {
                     b.Navigation("JobSkills");

@@ -10,16 +10,20 @@ using TechJobsPersistent.ViewModels;
 using TechJobsPersistent.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
+using System.Net;
 
 namespace TechJobsPersistent.Controllers
 {
     public class HomeController : Controller
     {
         private JobDbContext context;
+        
 
         public HomeController(JobDbContext dbContext)
         {
             context = dbContext;
+            
         }
 
         public IActionResult Index()
@@ -45,9 +49,14 @@ namespace TechJobsPersistent.Controllers
             {
                 Job job = new Job(addJobViewModel.Name, addJobViewModel.EmployerId);
                 context.Jobs.Add(job);
+
+               
                 context.SaveChanges();
                 int i = 0;
-                List<Job> list = context.Jobs.ToList();
+                List<Job> list = context.Jobs.Include(j=>j.Employer).ToList();
+
+                List<Job> job1 = context.Jobs.Where(j => j.Name == job.Name).Where(j => j.EmployerId == job.EmployerId).Include(j => j.Employer).ToList();
+
                 foreach (Job j in list)
                 {
                     if (j == job)
@@ -68,6 +77,25 @@ namespace TechJobsPersistent.Controllers
                 }
                
                 context.SaveChanges();
+
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com")
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential("techjobspersistent@gmail.com", "LaunchCode75?"),
+                    EnableSsl = true,
+                };
+
+                List<User> users = context.User.ToList();
+
+                foreach (User u in users)
+                {
+                    u.SendUpdate(job1[0], smtpClient);
+                }
+
+
+
+
+
                 return Redirect("/Home/");
             }
 

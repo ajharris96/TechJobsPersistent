@@ -42,7 +42,7 @@ namespace TechJobsPersistent.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employer employer = new Employer(viewModel.Name, viewModel.Location);
+                Employer employer = new Employer(viewModel.Name, viewModel.Location, viewModel.Url);
                 context.Employers.Add(employer);
                 context.SaveChanges();
                 return Redirect("/Employer/");
